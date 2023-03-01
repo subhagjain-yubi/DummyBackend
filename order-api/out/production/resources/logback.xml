@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_DIR" value= "var/log" />
+
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${env}/${env}.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}) %logger{36}:%L:
+				%msg%n%throwable
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${LOG_DIR}/archived/oms-raw-logs.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+	</appender>
+
+	<appender name="Console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>
+				%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %X{Slf4jMDCFilter.UUID} %yellow(%C{1.}) %logger{36}:%L:
+				%msg%n%throwable
+			</Pattern>
+		</layout>
+	</appender>
+
+
+
+	<logger name="com.yubi.dbe.*" additivity="false">
+		<level value="info" />
+		<appender-ref ref="Console" />
+		<appender-ref ref="file" />
+	</logger>
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="Console" />
+		<appender-ref ref="file" />
+	</root>
+
+</configuration>

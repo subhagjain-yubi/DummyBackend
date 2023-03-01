@@ -1,0 +1,4 @@
+rootProject.name = 'DummyBackend'
+
+include ':order-api'
+include ':order-service'
