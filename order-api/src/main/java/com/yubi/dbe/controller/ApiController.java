@@ -72,8 +72,12 @@ public class ApiController{
 
     @RequestMapping(path = "/file", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> uploadImages(@RequestPart("file") final MultipartFile file) throws IOException {
+        try {
+            return apiService.uploadFile(file);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
 
-       return apiService.uploadFile(file);
     }
 
 
